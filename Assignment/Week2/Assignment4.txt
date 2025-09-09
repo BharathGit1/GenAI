@@ -1,0 +1,53 @@
+Assignment 4
+Generate test data for credit card applications for different types of cards and conditions
+- Integrate with API to validate the response
+
+Input Request:
+----------------
+Endpoint: https://api.groq.com/openai/v1/chat/completions
+Request body:
+{
+"model": "openai/gpt-oss-20b",
+"messages": [{
+    "role": "user",
+    "content": "Context:\nYou are a quality assurance engineer who is working in a credit card division in a bank\n\nInstructions:\nCreate test data with the following fields: firstname, lastname, age, gender, cardtype, cardnumber, status\nThe data should cover people from different demographics\nThe data should not have any duplicates\nonly the last four digits of the card number should be displayed, other digits should be marked with x\nstatus should be printed in capital letters\nProvide minimum 10 samples\n\nExample:\nfirstname, lastname, age, gender, cardtype, cardnumber, status\nsam,durairaj,40,MALE,platinum,xxxx-xxxx-xxxxx-1234,ACTIVE\n\nPersona:\nbeginner friendly\n\nOutput:\nreturn only the test data in table format, do not return any other explanation or reasoning\n\nTone:\nprofessional"
+}]
+}
+
+
+
+Output Response form the model:
+--------------------------------
+{
+    "id": "chatcmpl-664d12f0-beff-400d-b4ce-75d146d980bc",
+    "object": "chat.completion",
+    "created": 1757449168,
+    "model": "openai/gpt-oss-20b",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "firstname,lastname,age,gender,cardtype,cardnumber,status  \nAisha,Patel,29,FEMALE,Gold,xxxx-xxxx-xxxxx-4321,ACTIVE  \nMarco,Rossi,45,MALE,Platinum,xxxx-xxxx-xxxxx-8765,INACTIVE  \nLi,Wang,33,FEMALE,Silver,xxxx-xxxx-xxxxx-1122,PENDING  \nCarlos,Mendoza,52,MALE,Gold,xxxx-xxxx-xxxxx-3344,ACTIVE  \nYuki,Sato,27,FEMALE,Standard,xxxx-xxxx-xxxxx-5566,ACTIVE  \nDavid,Nguyen,39,MALE,Platinum,xxxx-xxxx-xxxxx-7788,INACTIVE  \nSofia,Ramos,31,FEMALE,Silver,xxxx-xxxx-xxxxx-9900,ACTIVE  \nThomas,Schmidt,47,MALE,Gold,xxxx-xxxx-xxxxx-2211,PENDING  \nAnanya,Chandra,22,FEMALE,Standard,xxxx-xxxx-xxxxx-4455,ACTIVE  \nOmar,Hassan,58,MALE,Platinum,xxxx-xxxx-xxxxx-6677,INACTIVE",
+                "reasoning": "We need to produce a table with header line and 10 rows. Fields: firstname, lastname, age, gender, cardtype, cardnumber, status. Must be unique, no duplicates. Use various demographics. Cardnumber: xxxx-xxxx-xxxxx-1234 etc. Status in caps: ACTIVE, INACTIVE, etc. Provide minimal 10 samples. Let's create 10. Ensure uniqueness. Let's craft:\n\n1. first: Aisha, last: Patel, age 29, female, cardtype: gold, number xxxx-xxxx-xxxxx-4321, status ACTIVE.\n2. first: Marco, last: Rossi, age 45, male, cardtype: platinum, xxxx-xxxx-xxxxx-8765, status INACTIVE\n3. first: Li, last: Wang, age 33, nonbinary? but we can use gender: NONBINARY, cardtype: silver, xxxx-xxxx-xxxxx-1122, status PENDING\nBut gender field probably expects MALE/FEMALE. But we can include FEMALE or MALE. Let's keep simple: MALE or FEMALE. Provide diversity: age ranges, genders. Let's create 10.\n\nWe also need cardtype maybe: gold, platinum, silver, standard. Let's ensure no duplicate card numbers. Provide 10 unique rows.\n\nLet's craft:\n\nfirstname | lastname | age | gender | cardtype | cardnumber | status\n\nMake sure table format: comma separated? They say table format. Example uses comma separated. Provide header line and then each row. Provide 10. Let's do.\n\nCheck for duplicates: no.\n\nLet's produce.\n\n"
+            },
+            "logprobs": null,
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "queue_time": 0.442686428,
+        "prompt_tokens": 241,
+        "prompt_time": 0.028539966,
+        "completion_tokens": 591,
+        "completion_time": 0.544414167,
+        "total_tokens": 832,
+        "total_time": 0.572954133
+    },
+    "usage_breakdown": null,
+    "system_fingerprint": "fp_59f77feedf",
+    "x_groq": {
+        "id": "req_01k4r2491cet6bwewx0twxpj03"
+    },
+    "service_tier": "on_demand"
+}

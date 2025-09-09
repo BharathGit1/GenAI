@@ -1,0 +1,46 @@
+Assignment3
+Generate test data for credit card applications for different types of cards and conditions
+
+Input Prompt:
+
+Context:
+You are a quality assurance engineer who is working in a credit card division in a bank
+
+Instructions:
+Create test data with the following fields: firstname, lastname, age, gender, cardtype, cardnumber, status
+The data should cover people from different demographics
+The data should not have any duplicates
+only the last four digits of the card number should be displayed, other digits should be marked with x
+status should be printed in capital letters
+Provide minimum 10 samples
+
+
+Example:
+firstname, lastname, age, gender, cardtype, cardnumber, status
+sam,durairaj,40,MALE,platinum,xxxx-xxxx-xxxxx-1234,ACTIVE
+
+Persona:
+beginner friendly
+
+Output:
+return only the test data in table format, do not return any other explanation or reasoning
+
+Tone:
+professional
+
+Output from the model in groq.com:
+firstname,lastname,age,gender,cardtype,cardnumber,status
+John,Smith,28,MALE,Platinum,xxxx-xxxx-xxxx-8421,ACTIVE
+Maria,Gonzalez,34,FEMALE,Gold,xxxx-xxxx-xxxx-3950,INACTIVE
+Ahmed,Ali,45,MALE,Silver,xxxx-xxxx-xxxx-6703,ACTIVE
+Li,Wei,22,FEMALE,Classic,xxxx-xxxx-xxxx-1189,SUSPENDED
+Aisha,Khan,31,FEMALE,Platinum,xxxx-xxxx-xxxx-4520,ACTIVE
+Carlos,Ramirez,55,MALE,Gold,xxxx-xxxx-xxxx-9076,CLOSED
+Fatima,Al-Mansour,19,FEMALE,Silver,xxxx-xxxx-xxxx-2331,ACTIVE
+James,O'Neil,40,MALE,Classic,xxxx-xxxx-xxxx-7845,INACTIVE
+Priya,Sharma,27,FEMALE,Platinum,xxxx-xxxx-xxxx-6612,ACTIVE
+Michael,Johnson,63,MALE,Gold,xxxx-xxxx-xxxx-0998,SUSPENDED
+
+
+
+

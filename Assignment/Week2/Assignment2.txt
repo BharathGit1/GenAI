@@ -1,0 +1,52 @@
+Assignment 2:
+Integrate the prompt to your API (using postman) and confirm the response (json)
+Objective: You can integrate prompt + LLM API
+
+Input Request:
+----------------
+Endpoint: https://api.groq.com/openai/v1/chat/completions
+Request body: {
+"model": "openai/gpt-oss-20b",
+"messages": [{
+    "role": "user",
+    "content": "context:\nYou are an experienced test automation engineer working on a migration project to convert \ntest cases written in java selenium to playwright typescript\nInstructions:\nConvert the code given from selenium java to playwright typescript\nRemove the code that playwright implicitly handles\nAdd detailed comments for each action\n\n\nExample:\nSelenium script to find and click a web element\ndriver.findElements(By.xpath(\"//table[@id='table_id']//tr\")).click();\nPlaywright script to find and click a web element\npage.click(\"//table[@id='table_id']//tr\")\n\nPersona:\nshould be understandable for a beginner\n\nOutput:\nCritical, return only the playwright code in the context, don't include any explanation or reasoning\n\nTone:\nUse simple syntax\n\nSelenium code:\npackage week2.day2;\n\n\nimport java.time.Duration;\nimport java.util.List;\nimport java.util.concurrent.TimeUnit;\n\nimport org.openqa.selenium.By;\nimport org.openqa.selenium.Keys;\nimport org.openqa.selenium.WebElement;\nimport org.openqa.selenium.chrome.ChromeDriver;\n\nimport io.github.bonigarcia.wdm.WebDriverManager;\n\npublic class LeafgroundTable {\n\t\n\tpublic static void main(String[] args) {\n\t\t\n\t\t// Step 0) Setup the chromedriver using webdrivermanager software\n\t\tWebDriverManager.chromedriver().setup(); // .exe or binary\n\t\t\n\t\t// Step 1) Launch the chrome browser (Class Name -> ChromeDriver)\n\t\tChromeDriver driver = new ChromeDriver();\n\t\t\n\t\t// Step 2) Load the URL (http://leaftaps.com/opentaps/control/main) -> get\n\t\tdriver.get(\"http://leafground.com/pages/table.html\");\n\t\t\n\t\t// Step 2b) Add common time to wait for all/any elements to load (Write once)\n\t\t//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));\n\t\tdriver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);\n\t\t\n\t\t// Step 3) Maximize the chrome browser\n\t\tdriver.manage().window().maximize();\n\t\t\n\t\t// Find the count of rows\n\t\tList<WebElement> allRows = driver.findElements(By.xpath(\"//table[@id='table_id']//tr\"));\n\t\tSystem.out.println(allRows.size());\n\t\t\n\t\t\n\t}\n\n}"
+}]
+}
+
+
+
+Output Response form the model:
+--------------------------------
+{
+    "id": "chatcmpl-e08653b3-1bb1-45b2-bd91-034a7b7ad3d8",
+    "object": "chat.completion",
+    "created": 1757447379,
+    "model": "openai/gpt-oss-20b",
+    "choices": [
+        {
+            "index": 0,
+            "message": {
+                "role": "assistant",
+                "content": "```typescript\nimport { chromium } from 'playwright';\n\n(async () => {\n  // Step 0: Launch the browser (headless mode disabled for visibility)\n  const browser = await chromium.launch({ headless: false });\n\n  // Step 1: Create a new browser context and page\n  const context = await browser.newContext();\n  const page = await context.newPage();\n\n  // Step 2: Navigate to the target URL\n  await page.goto('http://leafground.com/pages/table.html');\n\n  // Step 3: Locate all table rows using XPath\n  const rowCount = await page.locator('//table[@id=\"table_id\"]//tr').count();\n\n  // Step 4: Print the number of rows found\n  console.log(rowCount);\n\n  // Close the browser\n  await browser.close();\n})();\n```",
+                "reasoning": "We need to produce Playwright TypeScript code. Must include comments for each action. Remove code implicitly handled by Playwright: like driver setup, implicit wait, maximize window maybe handled by launch options. Use page.goto, page.locator to get table rows. For counting, we can use page.$$ to get elements, or page.locator('xpath=...').count().\n\nAlso, need to output only code, no explanation. Provide comments.\n\nWe need to import modules? In Playwright tests, typically:\n\nimport { chromium } from 'playwright'; // or @playwright/test.\n\nWe need simple syntax for beginner. Use async main function, then call.\n\nWe can write:\n\n(async () => {\n  const browser = await chromium.launch({ headless: false });\n  const context = await browser.newContext();\n  const page = await context.newPage();\n\n  // Step 1: Navigate to URL\n  await page.goto('http://leafground.com/pages/table.html');\n\n  // Step 2: Find all rows in the table\n  const rows = await page.locator('//table[@id=\"table_id\"]//tr').all(); // or use count\n\n  console.log(rows.length);\n\n  await browser.close();\n})();\n\nBut need to remove implicit wait. Playwright automatically waits for elements. So no waits.\n\nAdd comments. Provide minimal.\n\nReturn only code. Let's craft. Ensure TypeScript compile: we can use ts-node, but we just provide code.\n\nBetter use 'page.locator' and 'count()'.\n\nconst rowCount = await page.locator('//table[@id=\"table_id\"]//tr').count();\nconsole.log(rowCount);\n\nOk.\n\nAdd comments before each major step.\n\nLet's output.\n\n"
+            },
+            "logprobs": null,
+            "finish_reason": "stop"
+        }
+    ],
+    "usage": {
+        "queue_time": 0.296623829,
+        "prompt_tokens": 525,
+        "prompt_time": 0.034287376,
+        "completion_tokens": 528,
+        "completion_time": 0.471561428,
+        "total_tokens": 1053,
+        "total_time": 0.505848804
+    },
+    "usage_breakdown": null,
+    "system_fingerprint": "fp_a5ac2a5d7b",
+    "x_groq": {
+        "id": "req_01k4r0dnjzf2r8pasgpr9ssxtv"
+    },
+    "service_tier": "on_demand"
+}

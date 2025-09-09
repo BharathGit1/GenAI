@@ -1,0 +1,149 @@
+Homework Assignment 1
+convert selenium to playwright typescript
+
+context:
+You are an experienced test automation engineer working on a migration project to convert 
+test cases written in java selenium to playwright typescript
+Instructions:
+Convert the code given from selenium java to playwright typescript
+Use setup and tear down functions
+Remove the code that playwright implicitly handles
+Add detailed comments for each action
+
+
+Example:
+Selenium script to find and click a web element
+driver.findElements(By.xpath("//table[@id='table_id']//tr")).click();
+Playwright script to find and click a web element
+page.click("//table[@id='table_id']//tr")
+
+Persona:
+should be understandable for a beginner
+
+Output:
+return only the playwright code, don't include and explanation or reasoning
+
+Tone:
+Use simple syntax
+
+Selenium code:
+package week2.day2;
+
+
+import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class LeafgroundTable {
+	
+	public static void main(String[] args) {
+		
+		// Step 0) Setup the chromedriver using webdrivermanager software
+		WebDriverManager.chromedriver().setup(); // .exe or binary
+		
+		// Step 1) Launch the chrome browser (Class Name -> ChromeDriver)
+		ChromeDriver driver = new ChromeDriver();
+		
+		// Step 2) Load the URL (http://leaftaps.com/opentaps/control/main) -> get
+		driver.get("http://leafground.com/pages/table.html");
+		
+		// Step 2b) Add common time to wait for all/any elements to load (Write once)
+		//driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(15));
+		driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+		
+		// Step 3) Maximize the chrome browser
+		driver.manage().window().maximize();
+		
+		// Find the count of rows
+		List<WebElement> allRows = driver.findElements(By.xpath("//table[@id='table_id']//tr"));
+		System.out.println(allRows.size());
+		
+
+	}
+
+}
+
+
+
+
+
+Output from the Model in groq.com UI:
+import { test, expect } from '@playwright/test';
+
+test.describe('Leafground Table Migration', () => {
+  // -------------------------------------------------------------------------
+  // Setup: runs once before all tests in this suite
+  // -------------------------------------------------------------------------
+  test.beforeAll(async ({ browser }) => {
+    // Create a new isolated browser context
+    const context = await browser.newContext();
+    // Open a new page (tab) in that context
+    const page = await context.newPage();
+
+    // Store them on the test info object for later use
+    (test as any).context = context;
+    (test as any).page = page;
+  });
+
+  // -------------------------------------------------------------------------
+  // Teardown: runs once after all tests in this suite
+  // -------------------------------------------------------------------------
+  test.afterAll(async () => {
+    // Close the page and its context to free resources
+    const page = (test as any).page;
+    const context = (test as any).context;
+    if (page) await page.close();
+    if (context) await context.close();
+  });
+
+  // -------------------------------------------------------------------------
+  // Test: count the number of rows in the table
+  // -------------------------------------------------------------------------
+  test('Count table rows', async () => {
+    // Retrieve the page created in beforeAll
+    const page = (test as any).page as import('@playwright/test').Page;
+
+    // -------------------------------------------------
+    // Step 1: Navigate to the target URL
+    // -------------------------------------------------
+    await page.goto('http://leafground.com/pages/table.html');
+
+    // -------------------------------------------------
+    // Step 2: Locate all <tr> elements inside the table with id="table_id"
+    // -------------------------------------------------
+    const rows = page.locator("//table[@id='table_id']//tr");
+
+    // -------------------------------------------------
+    // Step 3: Get the count of matching rows
+    // -------------------------------------------------
+    const rowCount = await rows.count();
+
+    // -------------------------------------------------
+    // Step 4: Output the count (Playwright auto‑waits, no need for implicit wait)
+    // -------------------------------------------------
+    console.log('Number of rows in the table:', rowCount);
+  });
+});
+
+-------------------------------------------------------------------------------------------------
+
+Output from running the test in
+https://try.playwright.tech/?l=playwright-test
+
+Running 1 test using 1 worker
+
+Number of rows in the table: [33m0[39m
+✓ 1 example.spec.ts:32:7 › Leafground Table Migration › Count table rows (1.6s)
+
+1 passed (3.4s)
+Files
+trace.zip - Open in Trace Viewer
+
+Duration of 4507 ms with Playwright version 1.53.1.
